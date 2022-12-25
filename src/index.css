@@ -1,13 +1,61 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Andika:ital@1&display=swap');
+:root {
+  --body-bg: #f1f1f1;
+  --header-bg: #edf6f9;
+  --add-bg: #e2e2e2;
+  --main-green: #28b9b5;
+  --main-blue: #4983ff;
+  --main-red: #ff5049;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  background-color: var(--body-bg);
+  font-family: 'Andika', sans-serif;
+}
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+header {
+  text-align: center;
+  flex-direction: column;
+  background-color: var(--header-bg);
+  padding: 20px;
+}
+header h1 {
+  text-transform: uppercase;
+  font-size: 34px;
+}
+.budgetDisplay {
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.budgetIncome,
+.budgetTotal,
+.budgetExpenses {
+  width: 280px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+}
+.budgetIncome {
+  background-color: var(--main-green);
+}
+.budgetTotal {
+  background-color: var(--main-blue);
+}
+.budgetExpenses {
+  background-color: var(--main-red);
+}
+.title {
+  margin-right: auto;
 }
