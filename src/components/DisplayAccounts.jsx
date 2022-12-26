@@ -1,12 +1,18 @@
 import { selectAccountsByType } from '../features/accounts/accountsSlice';
 import { useSelector } from 'react-redux';
 import { FaTimes, FaEdit } from 'react-icons/fa';
+import Spinner from './layout/Spinner';
 
 const DisplayAccounts = () => {
+  const status = useSelector((state) => state.accounts.status);
   const incomeArray = useSelector((state) => selectAccountsByType(state, '+'));
   const expensesArray = useSelector((state) =>
     selectAccountsByType(state, '-')
   );
+
+  if (status === 'loading') {
+    return <Spinner />;
+  }
   return (
     <div className='displayAllAccounts flex'>
       <ul className='incomeList flex'>
