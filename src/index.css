@@ -60,7 +60,6 @@ header h1 {
   margin-right: auto;
 }
 .displayAllAccounts {
-  background-color: var(--display-bg);
   padding-top: 20px;
   flex-direction: row;
   flex-wrap: wrap;
@@ -69,4 +68,49 @@ header h1 {
 .expensesList {
   flex-basis: auto;
   flex-direction: column;
+}
+.accountBtns {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  margin-top: 3px;
+}
+.accountForm {
+  flex-wrap: wrap;
+  background-color: var(--add-bg);
+  border-bottom: 1px solid #b4b4b4;
+  border-top: 1px solid #b4b4b4;
+  padding: 15px;
+}
+.accountType,
+.accountName,
+.accountValue {
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #b4b4b4;
+  outline: none;
+}
+.accountType {
+  padding: 8px;
+}
+.accountName {
+  width: 280px;
+  padding: 8px;
+}
+.accountValue {
+  width: 120px;
+  padding: 8px;
+}
+.formBtn {
+  background: linear-gradient(to bottom, var(--main-blue) 5%, #3e6fd8 100%);
+  background-color: var(--main-blue);
+  border-radius: 6px;
+  border: 1px solid #dcdcdc;
+  cursor: pointer;
+  color: #fff;
+  padding: 12px 24px;
+}
+.formBtn:hover {
+  background: linear-gradient(to bottom, #3e6fd8 5%, var(--main-blue) 100%);
+  background-color: #557ed6;
 }
