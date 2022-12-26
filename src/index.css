@@ -59,3 +59,14 @@ header h1 {
 .title {
   margin-right: auto;
 }
+.displayAllAccounts {
+  background-color: var(--display-bg);
+  padding-top: 20px;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.incomeList,
+.expensesList {
+  flex-basis: auto;
+  flex-direction: column;
+}
