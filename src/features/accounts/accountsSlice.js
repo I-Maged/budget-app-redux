@@ -1,19 +1,31 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+  createEntityAdapter,
+} from '@reduxjs/toolkit';
 import { db } from '../../firebase.config';
 import { collection, getDocs } from 'firebase/firestore/lite';
 
-const initialState = {
-  accounts: [],
+const accountsAdapter = createEntityAdapter();
+
+const initialState = accountsAdapter.getInitialState({
   status: 'idle',
   error: null,
-};
+});
 
 export const fetchAccounts = createAsyncThunk(
   'accounts/fetchAccounts',
   async () => {
     const accountsCol = collection(db, 'accounts');
     const accountsSnapshot = await getDocs(accountsCol);
-    const accountsList = accountsSnapshot.docs.map((doc) => doc.data());
+    const accountsList = [];
+    accountsSnapshot.forEach((doc) => {
+      return accountsList.push({
+        id: doc.id,
+        data: doc.data(),
+      });
+    });
     return accountsList;
   }
 );
@@ -29,7 +41,7 @@ const accountsSlice = createSlice({
       })
       .addCase(fetchAccounts.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.accounts = action.payload;
+        accountsAdapter.upsertMany(state, action.payload);
       })
       .addCase(fetchAccounts.rejected, (state, action) => {
         state.status = 'failed';
@@ -40,4 +52,11 @@ const accountsSlice = createSlice({
 
 export default accountsSlice.reducer;
 
-export const selectAllAccounts = (state) => state.accounts.accounts;
+export const { selectAll: selectAllAccounts } = accountsAdapter.getSelectors(
+  (state) => state.accounts
+);
+
+export const selectAccountsByType = createSelector(
+  [selectAllAccounts, (state, type) => type],
+  (accounts, type) => accounts.filter((account) => account.data.type === type)
+);

@@ -1,6 +1,6 @@
 import {
   fetchAccounts,
-  selectAllAccounts,
+  selectAccountsByType,
 } from '../../features/accounts/accountsSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -8,13 +8,16 @@ import { useEffect } from 'react';
 const DisplayTotal = () => {
   const dispatch = useDispatch();
   const accountsStatus = useSelector((state) => state.accounts.status);
-  const accounts = useSelector(selectAllAccounts);
+  const incomeArray = useSelector((state) => selectAccountsByType(state, '+'));
+  const expensesArray = useSelector((state) =>
+    selectAccountsByType(state, '-')
+  );
 
-  const incomeTotal = accounts.reduce((sum, account) => {
-    return account.type === '+' ? sum + account.value : sum;
+  const incomeTotal = incomeArray.reduce((sum, account) => {
+    return sum + account.data.value;
   }, 0);
-  const expensesTotal = accounts.reduce((sum, account) => {
-    return account.type === '-' ? sum + account.value : sum;
+  const expensesTotal = expensesArray.reduce((sum, account) => {
+    return sum + account.data.value;
   }, 0);
   const total = incomeTotal - expensesTotal;
 
@@ -36,7 +39,7 @@ const DisplayTotal = () => {
       </div>
       <div className='budgetExpenses flex'>
         <div className='title'>expenses</div>
-        <div>{expensesTotal}</div>
+        <div>-{expensesTotal}</div>
       </div>
     </div>
   );
