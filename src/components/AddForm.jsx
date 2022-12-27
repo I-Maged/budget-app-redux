@@ -1,17 +1,29 @@
 import { useState } from 'react';
+import { addNewAccount } from '../features/accounts/accountsActions';
+import { useDispatch } from 'react-redux';
 
 const AddForm = () => {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState('+');
   const [value, setvaluealue] = useState(0);
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     if (name.trim() === '') {
       return console.log('Description cannot be empty');
     }
     if (value <= 0) {
       return console.log('Value cannot be less that or equal to 0');
+    }
+    console.log({ name, type, value });
+
+    try {
+      // dispatch(addNewAccount(name, type, value));
+      await dispatch(addNewAccount({ name, type, value })).unwrap();
+    } catch (err) {
+      console.error('Failed to save the post: ', err);
     }
   };
 
@@ -40,7 +52,7 @@ const AddForm = () => {
         className='accountValue'
         id='value'
         value={value}
-        onChange={(e) => setvaluealue(e.target.value)}
+        onChange={(e) => setvaluealue(Number(e.target.value))}
       />
       <button type='submit' className='formBtn'>
         Add

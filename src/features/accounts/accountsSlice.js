@@ -1,11 +1,9 @@
 import {
   createSlice,
-  createAsyncThunk,
   createSelector,
   createEntityAdapter,
 } from '@reduxjs/toolkit';
-import { db } from '../../firebase.config';
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { fetchAccounts, addNewAccount } from './accountsActions';
 
 const accountsAdapter = createEntityAdapter();
 
@@ -13,22 +11,6 @@ const initialState = accountsAdapter.getInitialState({
   status: 'idle',
   error: null,
 });
-
-export const fetchAccounts = createAsyncThunk(
-  'accounts/fetchAccounts',
-  async () => {
-    const accountsCol = collection(db, 'accounts');
-    const accountsSnapshot = await getDocs(accountsCol);
-    const accountsList = [];
-    accountsSnapshot.forEach((doc) => {
-      return accountsList.push({
-        id: doc.id,
-        data: doc.data(),
-      });
-    });
-    return accountsList;
-  }
-);
 
 const accountsSlice = createSlice({
   name: 'accounts',
@@ -46,7 +28,8 @@ const accountsSlice = createSlice({
       .addCase(fetchAccounts.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-      });
+      })
+      .addCase(addNewAccount.fulfilled, accountsAdapter.addOne);
   },
 });
 

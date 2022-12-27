@@ -5,6 +5,7 @@ import Spinner from './layout/Spinner';
 
 const DisplayAccounts = () => {
   const status = useSelector((state) => state.accounts.status);
+
   const incomeArray = useSelector((state) => selectAccountsByType(state, '+'));
   const expensesArray = useSelector((state) =>
     selectAccountsByType(state, '-')

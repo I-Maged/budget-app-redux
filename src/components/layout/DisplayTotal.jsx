@@ -1,7 +1,8 @@
 import {
-  fetchAccounts,
+  // fetchAccounts,
   selectAccountsByType,
 } from '../../features/accounts/accountsSlice';
+import { fetchAccounts } from '../../features/accounts/accountsActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
