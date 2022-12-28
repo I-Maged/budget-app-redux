@@ -1,5 +1,6 @@
 import { selectAccountsByType } from '../features/accounts/accountsSlice';
 import { deleteAccount } from '../features/accounts/accountsActions';
+import { handleEdit } from '../features/accounts/accountsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes, FaEdit } from 'react-icons/fa';
 import Spinner from './layout/Spinner';
@@ -32,7 +33,10 @@ const DisplayAccounts = () => {
             <div className='title'>{account.data.name}</div>
             <div>{account.data.value}</div>
             <button className='accountBtns'>
-              <FaEdit color='white' />
+              <FaEdit
+                onClick={() => dispatch(handleEdit([account.id, account.data]))}
+                color='white'
+              />
             </button>
             <button className='accountBtns'>
               <FaTimes onClick={() => handleDelete(account.id)} color='white' />
@@ -46,7 +50,10 @@ const DisplayAccounts = () => {
             <div className='title'>{account.data.name}</div>
             <div>{account.data.value}</div>
             <button className='accountBtns'>
-              <FaEdit color='white' />
+              <FaEdit
+                onClick={() => dispatch(handleEdit([account.id, account.data]))}
+                color='white'
+              />
             </button>
             <button className='accountBtns'>
               <FaTimes onClick={() => handleDelete(account.id)} color='white' />

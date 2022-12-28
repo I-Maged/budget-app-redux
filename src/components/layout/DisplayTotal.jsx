@@ -11,13 +11,21 @@ const DisplayTotal = () => {
     selectAccountsByType(state, '-')
   );
 
-  const incomeTotal = incomeArray.reduce((sum, account) => {
-    return sum + account.data.value;
+  let incomeTotal = incomeArray.reduce((sum, account) => {
+    return typeof account.data.value == 'number'
+      ? sum + account.data.value
+      : sum;
   }, 0);
-  const expensesTotal = expensesArray.reduce((sum, account) => {
-    return sum + account.data.value;
+  let expensesTotal = expensesArray.reduce((sum, account) => {
+    return typeof account.data.value == 'number'
+      ? sum + account.data.value
+      : sum;
   }, 0);
-  const total = incomeTotal - expensesTotal;
+  let total = incomeTotal - expensesTotal;
+
+  incomeTotal = incomeTotal.toFixed(1);
+  expensesTotal = expensesTotal.toFixed(1);
+  total = total.toFixed(1);
 
   useEffect(() => {
     if (accountsStatus === 'idle') {

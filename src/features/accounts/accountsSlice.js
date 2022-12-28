@@ -3,19 +3,30 @@ import {
   createSelector,
   createEntityAdapter,
 } from '@reduxjs/toolkit';
-import { fetchAccounts, addNewAccount, deleteAccount } from './accountsActions';
+import {
+  fetchAccounts,
+  addNewAccount,
+  deleteAccount,
+  updateAccount,
+} from './accountsActions';
 
 const accountsAdapter = createEntityAdapter();
 
 const initialState = accountsAdapter.getInitialState({
   status: 'idle',
   error: null,
+  edit: {},
 });
 
 const accountsSlice = createSlice({
   name: 'accounts',
   initialState,
-  reducers: {},
+  reducers: {
+    handleEdit(state, action) {
+      state.edit.id = action.payload[0];
+      state.edit.account = action.payload[1];
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchAccounts.pending, (state) => {
@@ -32,7 +43,6 @@ const accountsSlice = createSlice({
       .addCase(addNewAccount.pending, (state) => {
         state.status = 'loading';
       })
-      // .addCase(addNewAccount.fulfilled, accountsAdapter.addOne)
       .addCase(addNewAccount.fulfilled, (state, action) => {
         state.status = 'succeeded';
         accountsAdapter.addOne(state, action.payload);
@@ -44,12 +54,23 @@ const accountsSlice = createSlice({
       .addCase(deleteAccount.pending, (state) => {
         state.status = 'loading';
       })
-      // .addCase(deleteAccount.fulfilled, accountsAdapter.removeOne)
       .addCase(deleteAccount.fulfilled, (state, action) => {
         state.status = 'succeeded';
         accountsAdapter.removeOne(state, action.payload);
       })
       .addCase(deleteAccount.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(updateAccount.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateAccount.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        accountsAdapter.upsertOne(state, action.payload);
+        state.edit = {};
+      })
+      .addCase(updateAccount.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });
@@ -66,3 +87,5 @@ export const selectAccountsByType = createSelector(
   [selectAllAccounts, (state, type) => type],
   (accounts, type) => accounts.filter((account) => account.data.type === type)
 );
+
+export const { handleEdit } = accountsSlice.actions;

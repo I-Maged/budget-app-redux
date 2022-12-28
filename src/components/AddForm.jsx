@@ -1,13 +1,26 @@
-import { useState } from 'react';
-import { addNewAccount } from '../features/accounts/accountsActions';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import {
+  addNewAccount,
+  updateAccount,
+} from '../features/accounts/accountsActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AddForm = () => {
+  const editStatus = useSelector((state) => state.accounts.edit);
+
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
   const [type, setType] = useState('+');
-  const [value, setvaluealue] = useState(0);
+  const [value, setValue] = useState('');
+
+  useEffect(() => {
+    if (editStatus.id) {
+      setName(editStatus.account.name);
+      setType(editStatus.account.type);
+      setValue(editStatus.account.value);
+    }
+  }, [editStatus]);
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -18,11 +31,24 @@ const AddForm = () => {
       return console.log('Value cannot be less that or equal to 0');
     }
 
-    try {
-      await dispatch(addNewAccount({ name, type, value })).unwrap();
-    } catch (err) {
-      console.error('Failed to save the post: ', err);
+    if (editStatus.id) {
+      const newData = { id: editStatus.id, name, type, value };
+      try {
+        dispatch(updateAccount(newData));
+      } catch (err) {
+        console.error('Failed to edit the post: ', err);
+      }
+    } else {
+      try {
+        await dispatch(addNewAccount({ name, type, value })).unwrap();
+      } catch (err) {
+        console.error('Failed to save the post: ', err);
+      }
     }
+
+    setName('');
+    setType('+');
+    setValue('');
   };
 
   return (
@@ -30,7 +56,7 @@ const AddForm = () => {
       <input
         type='text'
         className='accountName'
-        placeholder='add account description'
+        placeholder='add description'
         id='name'
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -50,7 +76,7 @@ const AddForm = () => {
         className='accountValue'
         id='value'
         value={value}
-        onChange={(e) => setvaluealue(Number(e.target.value))}
+        onChange={(e) => setValue(Number(e.target.value))}
       />
       <button type='submit' className='formBtn'>
         Add

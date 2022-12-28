@@ -6,6 +6,7 @@ import {
   addDoc,
   doc,
   deleteDoc,
+  updateDoc,
 } from 'firebase/firestore/lite';
 
 export const fetchAccounts = createAsyncThunk(
@@ -38,5 +39,22 @@ export const deleteAccount = createAsyncThunk(
   async (accountId) => {
     await deleteDoc(doc(db, 'accounts', accountId));
     return accountId;
+  }
+);
+export const updateAccount = createAsyncThunk(
+  'accounts/updateAccount',
+  async (newData) => {
+    const editAccountData = {
+      name: newData.name,
+      type: newData.type,
+      value: newData.value,
+    };
+    const docRef = doc(db, 'accounts', newData.id);
+    await updateDoc(docRef, newData);
+
+    return {
+      id: newData.id,
+      data: editAccountData,
+    };
   }
 );
