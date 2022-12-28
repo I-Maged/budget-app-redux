@@ -3,7 +3,7 @@ import {
   createSelector,
   createEntityAdapter,
 } from '@reduxjs/toolkit';
-import { fetchAccounts, addNewAccount } from './accountsActions';
+import { fetchAccounts, addNewAccount, deleteAccount } from './accountsActions';
 
 const accountsAdapter = createEntityAdapter();
 
@@ -29,7 +29,30 @@ const accountsSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      .addCase(addNewAccount.fulfilled, accountsAdapter.addOne);
+      .addCase(addNewAccount.pending, (state) => {
+        state.status = 'loading';
+      })
+      // .addCase(addNewAccount.fulfilled, accountsAdapter.addOne)
+      .addCase(addNewAccount.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        accountsAdapter.addOne(state, action.payload);
+      })
+      .addCase(addNewAccount.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(deleteAccount.pending, (state) => {
+        state.status = 'loading';
+      })
+      // .addCase(deleteAccount.fulfilled, accountsAdapter.removeOne)
+      .addCase(deleteAccount.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        accountsAdapter.removeOne(state, action.payload);
+      })
+      .addCase(deleteAccount.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      });
   },
 });
 

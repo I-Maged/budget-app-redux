@@ -17,10 +17,8 @@ const AddForm = () => {
     if (value <= 0) {
       return console.log('Value cannot be less that or equal to 0');
     }
-    console.log({ name, type, value });
 
     try {
-      // dispatch(addNewAccount(name, type, value));
       await dispatch(addNewAccount({ name, type, value })).unwrap();
     } catch (err) {
       console.error('Failed to save the post: ', err);

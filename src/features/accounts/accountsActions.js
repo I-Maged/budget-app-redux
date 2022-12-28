@@ -1,6 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { db } from '../../firebase.config';
-import { getDocs, collection, addDoc } from 'firebase/firestore/lite';
+import {
+  getDocs,
+  collection,
+  addDoc,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore/lite';
 
 export const fetchAccounts = createAsyncThunk(
   'accounts/fetchAccounts',
@@ -17,7 +23,6 @@ export const fetchAccounts = createAsyncThunk(
     return accountsList;
   }
 );
-
 export const addNewAccount = createAsyncThunk(
   'accounts/addNewAccount',
   async (newAccount) => {
@@ -26,5 +31,12 @@ export const addNewAccount = createAsyncThunk(
       id: response.id,
       data: newAccount,
     };
+  }
+);
+export const deleteAccount = createAsyncThunk(
+  'accounts/deleteAccount',
+  async (accountId) => {
+    await deleteDoc(doc(db, 'accounts', accountId));
+    return accountId;
   }
 );

@@ -1,15 +1,25 @@
 import { selectAccountsByType } from '../features/accounts/accountsSlice';
-import { useSelector } from 'react-redux';
+import { deleteAccount } from '../features/accounts/accountsActions';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes, FaEdit } from 'react-icons/fa';
 import Spinner from './layout/Spinner';
 
 const DisplayAccounts = () => {
+  const dispatch = useDispatch();
   const status = useSelector((state) => state.accounts.status);
 
   const incomeArray = useSelector((state) => selectAccountsByType(state, '+'));
   const expensesArray = useSelector((state) =>
     selectAccountsByType(state, '-')
   );
+
+  const handleDelete = (accountId) => {
+    try {
+      dispatch(deleteAccount(accountId));
+    } catch (err) {
+      console.error('Failed to delete account: ', err);
+    }
+  };
 
   if (status === 'loading') {
     return <Spinner />;
@@ -25,7 +35,7 @@ const DisplayAccounts = () => {
               <FaEdit color='white' />
             </button>
             <button className='accountBtns'>
-              <FaTimes color='white' />
+              <FaTimes onClick={() => handleDelete(account.id)} color='white' />
             </button>
           </li>
         ))}
@@ -39,7 +49,7 @@ const DisplayAccounts = () => {
               <FaEdit color='white' />
             </button>
             <button className='accountBtns'>
-              <FaTimes color='white' />
+              <FaTimes onClick={() => handleDelete(account.id)} color='white' />
             </button>
           </li>
         ))}
