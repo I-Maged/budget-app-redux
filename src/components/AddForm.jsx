@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addNewAccount,
   updateAccount,
 } from '../features/accounts/accountsActions';
-import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const AddForm = () => {
   const editStatus = useSelector((state) => state.accounts.edit);
-  const errorStatus = useSelector((state) => state.accounts.error);
 
   const dispatch = useDispatch();
 
@@ -27,26 +26,17 @@ const AddForm = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     if (name.trim() === '') {
-      return console.log('Description cannot be empty');
+      return toast.error('Description cannot be empty');
     }
     if (value <= 0) {
-      return console.log('Value cannot be less that or equal to 0');
+      return toast.error('Value cannot be less that or equal to 0');
     }
 
     if (editStatus) {
       const newData = { id: editStatus.id, name, type, value };
-      try {
-        dispatch(updateAccount(newData));
-      } catch (err) {
-        console.error('Failed to edit the post: ', err);
-      }
+      dispatch(updateAccount(newData));
     } else {
-      try {
-        await dispatch(addNewAccount({ name, type, value })).unwrap();
-      } catch (err) {
-        console.error('Failed to save the post: ', err);
-        toast.error(errorStatus);
-      }
+      await dispatch(addNewAccount({ name, type, value })).unwrap();
     }
 
     setName('');

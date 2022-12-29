@@ -1,7 +1,7 @@
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectAccountsByType } from '../../features/accounts/accountsSlice';
 import { fetchAccounts } from '../../features/accounts/accountsActions';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 const DisplayTotal = () => {
@@ -30,16 +30,13 @@ const DisplayTotal = () => {
   total = total.toFixed(1);
 
   useEffect(() => {
-    if (errorStatus) {
-      toast.error(errorStatus);
-    }
-  }, [errorStatus]);
-
-  useEffect(() => {
     if (accountsStatus === 'idle') {
       dispatch(fetchAccounts());
     }
-  }, [accountsStatus, dispatch]);
+    if (errorStatus) {
+      toast.error(errorStatus);
+    }
+  }, [accountsStatus, dispatch, errorStatus]);
 
   return (
     <div className='budgetDisplay flex'>

@@ -23,8 +23,6 @@ const accountsSlice = createSlice({
   initialState,
   reducers: {
     handleEdit(state, action) {
-      // state.edit.id = action.payload[0];
-      // state.edit.account = action.payload[1];
       state.edit = { id: action.payload[0], account: action.payload[1] };
     },
   },
@@ -37,7 +35,6 @@ const accountsSlice = createSlice({
       .addCase(fetchAccounts.fulfilled, (state, action) => {
         state.status = 'succeeded';
         accountsAdapter.upsertMany(state, action.payload);
-        state.error = null;
       })
       .addCase(fetchAccounts.rejected, (state) => {
         state.status = 'failed';
@@ -48,7 +45,6 @@ const accountsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(addNewAccount.fulfilled, (state, action) => {
-        state.error = null;
         state.status = 'succeeded';
         accountsAdapter.addOne(state, action.payload);
       })
@@ -61,7 +57,6 @@ const accountsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(deleteAccount.fulfilled, (state, action) => {
-        state.error = null;
         state.status = 'succeeded';
         accountsAdapter.removeOne(state, action.payload);
       })
@@ -75,7 +70,6 @@ const accountsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(updateAccount.fulfilled, (state, action) => {
-        state.error = null;
         state.status = 'succeeded';
         accountsAdapter.upsertOne(state, action.payload);
       })
