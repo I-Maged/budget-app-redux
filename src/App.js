@@ -1,6 +1,8 @@
 import Header from './components/Header';
 import DisplayAccounts from './components/DisplayAccounts';
 import AddForm from './components/AddForm';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -8,6 +10,7 @@ function App() {
       <Header />
       <AddForm />
       <DisplayAccounts />
+      <ToastContainer />
     </>
   );
 }

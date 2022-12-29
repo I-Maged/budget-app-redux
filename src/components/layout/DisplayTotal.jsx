@@ -2,9 +2,11 @@ import { selectAccountsByType } from '../../features/accounts/accountsSlice';
 import { fetchAccounts } from '../../features/accounts/accountsActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const DisplayTotal = () => {
   const dispatch = useDispatch();
+  const errorStatus = useSelector((state) => state.accounts.error);
   const accountsStatus = useSelector((state) => state.accounts.status);
   const incomeArray = useSelector((state) => selectAccountsByType(state, '+'));
   const expensesArray = useSelector((state) =>
@@ -26,6 +28,12 @@ const DisplayTotal = () => {
   incomeTotal = incomeTotal.toFixed(1);
   expensesTotal = expensesTotal.toFixed(1);
   total = total.toFixed(1);
+
+  useEffect(() => {
+    if (errorStatus) {
+      toast.error(errorStatus);
+    }
+  }, [errorStatus]);
 
   useEffect(() => {
     if (accountsStatus === 'idle') {

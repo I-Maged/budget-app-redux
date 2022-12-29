@@ -4,9 +4,11 @@ import {
   updateAccount,
 } from '../features/accounts/accountsActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const AddForm = () => {
   const editStatus = useSelector((state) => state.accounts.edit);
+  const errorStatus = useSelector((state) => state.accounts.error);
 
   const dispatch = useDispatch();
 
@@ -15,7 +17,7 @@ const AddForm = () => {
   const [value, setValue] = useState('');
 
   useEffect(() => {
-    if (editStatus.id) {
+    if (editStatus) {
       setName(editStatus.account.name);
       setType(editStatus.account.type);
       setValue(editStatus.account.value);
@@ -31,7 +33,7 @@ const AddForm = () => {
       return console.log('Value cannot be less that or equal to 0');
     }
 
-    if (editStatus.id) {
+    if (editStatus) {
       const newData = { id: editStatus.id, name, type, value };
       try {
         dispatch(updateAccount(newData));
@@ -43,6 +45,7 @@ const AddForm = () => {
         await dispatch(addNewAccount({ name, type, value })).unwrap();
       } catch (err) {
         console.error('Failed to save the post: ', err);
+        toast.error(errorStatus);
       }
     }
 
@@ -79,7 +82,7 @@ const AddForm = () => {
         onChange={(e) => setValue(Number(e.target.value))}
       />
       <button type='submit' className='formBtn'>
-        Add
+        {editStatus ? 'Edit' : 'Add'}
       </button>
     </form>
   );
