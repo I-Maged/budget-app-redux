@@ -5,6 +5,7 @@ import {
   updateAccount,
 } from '../features/accounts/accountsActions';
 import { toast } from 'react-toastify';
+import { serverTimestamp } from 'firebase/firestore/lite';
 
 const AddForm = () => {
   const editStatus = useSelector((state) => state.accounts.edit);
@@ -36,7 +37,9 @@ const AddForm = () => {
       const newData = { id: editStatus.id, name, type, value };
       dispatch(updateAccount(newData));
     } else {
-      await dispatch(addNewAccount({ name, type, value })).unwrap();
+      await dispatch(
+        addNewAccount({ name, type, value, timestamp: serverTimestamp() })
+      ).unwrap();
     }
 
     setName('');

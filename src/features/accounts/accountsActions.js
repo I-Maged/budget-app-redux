@@ -7,13 +7,18 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  query,
+  orderBy,
 } from 'firebase/firestore/lite';
 
 export const fetchAccounts = createAsyncThunk(
   'accounts/fetchAccounts',
   async () => {
     const accountsCol = collection(db, 'accounts');
-    const accountsSnapshot = await getDocs(accountsCol);
+
+    const q = query(accountsCol, orderBy('timestamp', 'asc'));
+
+    const accountsSnapshot = await getDocs(q);
     const accountsList = [];
     accountsSnapshot.forEach((doc) => {
       return accountsList.push({
@@ -50,7 +55,7 @@ export const updateAccount = createAsyncThunk(
       value: newData.value,
     };
     const docRef = doc(db, 'accounts', newData.id);
-    await updateDoc(docRef, newData);
+    await updateDoc(docRef, editAccountData);
 
     return {
       id: newData.id,

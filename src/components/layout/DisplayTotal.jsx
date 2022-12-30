@@ -42,15 +42,25 @@ const DisplayTotal = () => {
     <div className='budgetDisplay flex'>
       <div className='budgetIncome flex'>
         <div className='title'>income</div>
-        <div>{incomeTotal}</div>
+        <div>
+          {incomeTotal > 0 && '+'}
+          {incomeTotal}
+        </div>
       </div>
       <div className='budgetTotal flex'>
         <div className='title'>total</div>
-        <div>{total}</div>
+        <div>
+          {total > 0 && '+'}
+          {total < 0 && '-'}
+          {total}
+        </div>
       </div>
       <div className='budgetExpenses flex'>
         <div className='title'>expenses</div>
-        <div>-{expensesTotal}</div>
+        <div>
+          {expensesTotal > 0 && '-'}
+          {expensesTotal}
+        </div>
       </div>
     </div>
   );
