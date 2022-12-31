@@ -18,6 +18,8 @@
 body {
   background-color: var(--body-bg);
   font-family: 'Andika', sans-serif;
+  min-height: 100vh;
+  position: relative;
 }
 .flex {
   display: flex;
@@ -64,6 +66,7 @@ header h1 {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
+  margin-bottom: 60px;
 }
 .incomeList,
 .expensesList {
@@ -114,4 +117,25 @@ header h1 {
 .formBtn:hover {
   background: linear-gradient(to bottom, #3e6fd8 5%, var(--main-blue) 100%);
   background-color: #557ed6;
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  background-color: var(--add-bg);
+  text-align: center;
+  width: 100%;
+  padding: 10px 0;
+  color: var(--main-green);
+}
+.githubLink {
+  text-decoration: none;
+  margin-left: -10px;
+  color: var(--main-red);
+}
+.githubIcon {
+  margin-left: -10px;
+  transition: transform 0.3s ease-in-out;
+}
+.githubIcon:hover {
+  transform: rotate(360deg) scale(1.2);
 }
