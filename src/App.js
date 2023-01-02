@@ -1,7 +1,7 @@
 import Header from './components/Header';
 import AddForm from './components/AddForm';
 import DisplayAccounts from './components/DisplayAccounts';
-import Footer from './components/layout/Footer';
+import Footer from './components/Footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

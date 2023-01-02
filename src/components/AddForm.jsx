@@ -68,8 +68,9 @@ const AddForm = () => {
       </select>
       <input
         type='number'
-        min='0'
         className='accountValue'
+        placeholder='add value'
+        min='0'
         id='value'
         value={value}
         onChange={(e) => setValue(Number(e.target.value))}
