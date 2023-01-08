@@ -38,11 +38,32 @@ describe('test total income', () => {
       </Provider>
     );
 
+    // screen.debug();
+
     const totalIncome = screen.getByTestId('budgetIncome');
     const incomeText = totalIncome.firstChild;
     const incomeValue = totalIncome.lastChild;
 
     expect(incomeText).toHaveTextContent('income');
     expect(incomeValue).toHaveTextContent(0.0);
+  });
+});
+
+describe('add form', () => {
+  it('return description error', async () => {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+
+    userEvent.click(screen.getByRole('button', { name: /add/i }));
+
+    // expect(
+    //   await screen.findByText(/description cannot be empty/i)
+    // ).toBeVisible();
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Description cannot be empty'
+    );
   });
 });

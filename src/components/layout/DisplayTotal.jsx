@@ -40,7 +40,7 @@ const DisplayTotal = () => {
 
   return (
     <div className='budgetDisplay flex'>
-      <div className='budgetIncome flex'>
+      <div data-testid='budgetIncome' className='budgetIncome flex'>
         <div className='title'>income</div>
         <div>
           {incomeTotal > 0 && '+'}
