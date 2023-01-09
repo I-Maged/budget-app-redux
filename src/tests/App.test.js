@@ -1,11 +1,10 @@
 import React from 'react';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { store } from '../app/store';
 import Header from '../components/Header';
-import AddForm from '../components/AddForm';
 import App from '../App';
 
 describe('test Header component by role', () => {
@@ -38,8 +37,6 @@ describe('test total income', () => {
       </Provider>
     );
 
-    // screen.debug();
-
     const totalIncome = screen.getByTestId('budgetIncome');
     const incomeText = totalIncome.firstChild;
     const incomeValue = totalIncome.lastChild;
@@ -59,11 +56,29 @@ describe('add form', () => {
 
     userEvent.click(screen.getByRole('button', { name: /add/i }));
 
-    // expect(
-    //   await screen.findByText(/description cannot be empty/i)
-    // ).toBeVisible();
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Description cannot be empty'
     );
+  });
+});
+
+describe('add form', () => {
+  it('return value error', async () => {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+
+    const formDes = screen.getByRole('textbox', { name: /description/i });
+
+    // fireEvent.change(formDes, { target: { value: 'test' } });
+    // userEvent.click(screen.getByRole('button', { name: /add/i }));
+    await userEvent.type(formDes, 'Knight');
+    await userEvent.click(screen.getByRole('button', { name: /add/i }));
+
+    expect(
+      await screen.findByText(/value cannot be less that or equal to 0/i)
+    ).toBeVisible();
   });
 });

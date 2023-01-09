@@ -52,6 +52,7 @@ const AddForm = () => {
       <input
         type='text'
         className='accountName'
+        aria-label='description'
         placeholder='add description'
         id='name'
         value={name}
@@ -69,6 +70,7 @@ const AddForm = () => {
       <input
         type='number'
         className='accountValue'
+        aria-label='value'
         placeholder='add value'
         min='0'
         id='value'
